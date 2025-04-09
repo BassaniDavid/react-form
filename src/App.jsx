@@ -18,22 +18,42 @@ const articles = [
 
 function App() {
 
+  // usestate per rendere dinamico l array
   const [arrayArticles, setArrayArticles] = useState(articles)
 
+  // usestate per aggiungere nuovo titolo
   const [newArticle, setnewArticle] = useState(' ')
 
+  // funzione per invio nuovo titolo
   const handleSubmit = event => {
     event.preventDefault()
-    console.log('il nuovo articolo inviato è:' + newArticle)
-    const updateArray = [...arrayArticles, newArticle]
+    setArrayArticles([...arrayArticles, newArticle])
+  }
+
+  // funzione per inserire nuovo titolo
+  const removeArticle = i => {
+    const updateArray = arrayArticles.filter((article, index) => {
+      return index !== i
+    })
     setArrayArticles(updateArray)
   }
+
 
   return (
     <>
       <ul>
-        {arrayArticles.map((article, index) => <li key={index}>{article}</li>)}
-      </ul>
+        {/* map per generare <li> per ogni titolo */}
+        {arrayArticles.map((article, i) =>
+          <>
+            <li key={i}>
+              <p>{article}</p>
+              <button onClick={() => removeArticle(i)}>cancella</button>
+            </li>
+          </>
+        )}
+      </ul >
+
+      {/* form */}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
